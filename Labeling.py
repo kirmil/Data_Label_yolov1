@@ -16,7 +16,6 @@ Hit the next image button label file will then be saved and a new image will app
 import tkinter as tk
 from PIL import ImageTk, Image
 import os
-test = "test"
 class image_loader:
     def __init__(self,image_dir,label_dir):
         super().__init__()
@@ -24,7 +23,7 @@ class image_loader:
         for i in self.all_images:
             if os.listdir(label_dir):
                 for r in os.listdir(label_dir):
-                    if i.strip(".png") == r.strip(".txt"):
+                    if i.strip(".jpg") == r.strip(".txt"):
                         self.all_images.remove(i)
 
 class CreateWindow:
@@ -50,10 +49,11 @@ class CreateWindow:
         self.canvas.bind("<ButtonRelease-1>", self.stop_drawing)
 
         self.image_index = 0
-        self.images = image_loader("Images","Labels").all_images
-        print(self.images)
-        self.image_path = "Images\\"
-        self.label_path = "Labels\\"
+        
+        
+        self.image_path = "Data_Label_yolov1\\Images\\"
+        self.label_path = "Data_Label_yolov1\\Labels\\"
+        self.images = image_loader(self.image_path,self.label_path).all_images
         self.image = Image.open(self.image_path+self.images[self.image_index])
         self.image = self.image.resize((300, 300))
         self.photo = ImageTk.PhotoImage(self.image)
@@ -87,7 +87,7 @@ class CreateWindow:
         self.rectangles = []
 
     def save_labels(self):
-        with open(self.label_path+self.images[self.image_index].replace(".png",".txt"), 'w') as f:
+        with open(self.label_path+self.images[self.image_index].replace(".jpg",".txt"), 'w') as f:
             for rectangle in self.rectangles:
                 f.write(str(self.canvas.bbox(rectangle[0])))
                 f.write(","+rectangle[1])
